@@ -1,4 +1,4 @@
-package framework.config;
+package com.surepay.framework.config;
 
 import org.aeonbits.owner.ConfigFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +37,15 @@ public class ConfigManager {
         return config;
     }
     public static ConfigManager getInstance() {
-        if (instance == null) {
+        ConfigManager result = ConfigManager.instance;
+        if (result == null) {
             synchronized (ConfigManager.class) {
-                if (instance == null) {
-                    instance = new ConfigManager();
+                 result = ConfigManager.instance;
+                if (result == null) {
+                     ConfigManager.instance = result = new ConfigManager();
                 }
             }
         }
-        return instance;
+        return result;
     }
 }

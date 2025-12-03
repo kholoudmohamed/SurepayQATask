@@ -1,4 +1,4 @@
-package framework.Models;
+package com.surepay.framework.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
