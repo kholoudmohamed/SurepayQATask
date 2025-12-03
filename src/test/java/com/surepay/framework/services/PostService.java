@@ -2,8 +2,7 @@ package com.surepay.framework.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.surepay.framework.models.Post;
-import com.surepay.framework.models.User;
+import com.surepay.framework.models.*;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;

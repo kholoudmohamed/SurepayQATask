@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 public abstract class BaseTest {
     protected UserService userService;
     protected PostService postService;
+    protected CommentService commentService;
 
     @BeforeSuite(alwaysRun = true)
     public void setupSuite() {
@@ -23,6 +24,7 @@ public abstract class BaseTest {
     public void setupTest(Method method) {
         userService = new UserService();
         postService = new PostService();
+        commentService = new CommentService();
 
         String testName = method.getName();
         log.info("Starting test: {}", testName);
@@ -32,8 +34,9 @@ public abstract class BaseTest {
     private void performHealthChecks() {
         boolean userServiceHealthy = userService.isServiceHealthy();
         boolean postServiceHealthy = postService.isServiceHealthy();
+        boolean commentServiceHealthy = commentService.isServiceHealthy();
         
-        if (!userServiceHealthy || !postServiceHealthy) {
+        if (!userServiceHealthy || !postServiceHealthy || !commentServiceHealthy) {
             throw new RuntimeException("Service health check failed - cannot proceed with tests");
         }
     }
