@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.surepay.framework.config.ApiEndpoints;
 import com.surepay.framework.models.*;
 
 import io.restassured.http.ContentType;
@@ -11,12 +12,10 @@ import io.restassured.response.Response;
 
 @Slf4j
 public class CommentService extends BaseService {
-
-    private static final String COMMENTS_ENDPOINT = "/comments";
     
     @Override
     protected String getBasePath() {
-        return COMMENTS_ENDPOINT;
+        return ApiEndpoints.COMMENTS;
     }
 
     @Override

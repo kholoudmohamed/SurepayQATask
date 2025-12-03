@@ -3,6 +3,7 @@ package com.surepay.framework.services;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import com.surepay.framework.config.ApiEndpoints;
 import com.surepay.framework.models.User;
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +16,9 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 public class UserService extends BaseService {
     
-    private static final String USERS_ENDPOINT = "/users";
-    
     @Override
     protected String getBasePath() {
-        return USERS_ENDPOINT;
+        return ApiEndpoints.USERS;
     }
 
     public List<User> getAllUsers() {

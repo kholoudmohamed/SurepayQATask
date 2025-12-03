@@ -2,6 +2,7 @@ package com.surepay.framework.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.surepay.framework.config.ApiEndpoints;
 import com.surepay.framework.models.*;
 
 import io.restassured.http.ContentType;
@@ -10,11 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PostService extends BaseService {
-    private static final String POSTS_ENDPOINT = "/posts";
 
     @Override
     protected String getBasePath() {
-        return POSTS_ENDPOINT;
+        return ApiEndpoints.POSTS;
     }
 
     @Override
