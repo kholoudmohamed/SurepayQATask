@@ -116,6 +116,17 @@
                     </includes>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <testFailureIgnore>false</testFailureIgnore>
+                    <!-- Generate JUnit XML reports for CircleCI -->
+                    <useFile>true</useFile>
+                    <properties>
+                        <property>
+                            <name>junit</name>
+                            <value>true</value>
+                        </property>
+                    </properties>
+                    <systemPropertyVariables>
+                        <testng.dtd.http>true</testng.dtd.http>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             

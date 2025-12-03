@@ -39,9 +39,17 @@ jobs:
           command: mvn surefire-report:report-only site:site
           when: always
       
-      # Store test results for CircleCI dashboard
+      # Create a clean directory with only JUnit XML files for CircleCI
+      - run:
+          name: Prepare JUnit XML for CircleCI
+          command: |
+            mkdir -p /tmp/junit-results
+            find target/surefire-reports -name "TEST-*.xml" -exec cp {} /tmp/junit-results/ \;
+          when: always
+      
+      # Store only JUnit XML files for CircleCI dashboard
       - store_test_results:
-          path: target/surefire-reports
+          path: /tmp/junit-results
       
       # Store comprehensive HTML reports
       - store_artifacts:
