@@ -25,13 +25,14 @@ jobs:
             - ~/.m2
           key: maven-deps-v2-{{ checksum "pom.xml" }}
       
-      # Run tests with coverage
+      # Run tests without coverage initially to fix compatibility issues
       - run:
           name: Run Tests
           command: |
             mvn clean test \
               -Dtest.environment=prod \
-              -Dmaven.test.failure.ignore=true
+              -Dmaven.test.failure.ignore=true \
+              -Djacoco.skip=true
       
       # Debug: Check what test result files were generated
       - run:
@@ -45,7 +46,7 @@ jobs:
             find target -name "*.xml" -type f || echo "No XML files found"
           when: always
       
-      # Generate HTML test reports
+      # Generate HTML test reports (skip JaCoCo for now)
       - run:
           name: Generate Test Reports
           command: mvn surefire-report:report-only site:site
@@ -77,11 +78,6 @@ jobs:
       - store_artifacts:
           path: target/site
           destination: html-reports
-      
-      # Store JaCoCo coverage reports
-      - store_artifacts:
-          path: target/site/jacoco
-          destination: coverage-reports
       
       # Store raw test results
       - store_artifacts:
