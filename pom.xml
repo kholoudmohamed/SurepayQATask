@@ -118,15 +118,23 @@
                     <testFailureIgnore>false</testFailureIgnore>
                     <!-- Generate JUnit XML reports for CircleCI -->
                     <useFile>true</useFile>
+                    <printSummary>true</printSummary>
+                    <reportFormat>xml</reportFormat>
                     <properties>
                         <property>
                             <name>junit</name>
                             <value>true</value>
                         </property>
+                        <property>
+                            <name>outputdir</name>
+                            <value>target/surefire-reports</value>
+                        </property>
                     </properties>
+                    <!-- Ensure TestNG generates JUnit-compatible XML -->
                     <systemPropertyVariables>
                         <testng.dtd.http>true</testng.dtd.http>
                     </systemPropertyVariables>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
                 </configuration>
             </plugin>
             

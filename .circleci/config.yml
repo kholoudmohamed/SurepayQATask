@@ -33,6 +33,18 @@ jobs:
               -Dtest.environment=prod \
               -Dmaven.test.failure.ignore=true
       
+      # Debug: Check what test result files were generated
+      - run:
+          name: Debug - List generated test files
+          command: |
+            echo "=== Surefire Reports Directory ==="
+            ls -la target/surefire-reports/ || echo "No surefire-reports directory"
+            echo "=== Looking for TEST-*.xml files ==="
+            find target -name "TEST-*.xml" -type f || echo "No TEST-*.xml files found"
+            echo "=== Looking for any XML files ==="
+            find target -name "*.xml" -type f || echo "No XML files found"
+          when: always
+      
       # Generate HTML test reports
       - run:
           name: Generate Test Reports
@@ -43,13 +55,23 @@ jobs:
       - run:
           name: Prepare JUnit XML for CircleCI
           command: |
-            mkdir -p /tmp/junit-results
-            find target/surefire-reports -name "TEST-*.xml" -exec cp {} /tmp/junit-results/ \;
+            mkdir -p /tmp/test-results/junit
+            # Copy JUnit XML files if they exist
+            if ls target/surefire-reports/TEST-*.xml 1> /dev/null 2>&1; then
+              cp target/surefire-reports/TEST-*.xml /tmp/test-results/junit/
+            fi
+            # Also copy junitreports if they exist
+            if ls target/surefire-reports/junitreports/TEST-*.xml 1> /dev/null 2>&1; then
+              cp target/surefire-reports/junitreports/TEST-*.xml /tmp/test-results/junit/
+            fi
+            # List what we found
+            echo "Files in test results:"
+            ls -la /tmp/test-results/junit/ || echo "No files found"
           when: always
       
       # Store only JUnit XML files for CircleCI dashboard
       - store_test_results:
-          path: /tmp/junit-results
+          path: /tmp/test-results
       
       # Store comprehensive HTML reports
       - store_artifacts:
