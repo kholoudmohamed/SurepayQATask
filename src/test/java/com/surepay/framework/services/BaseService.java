@@ -1,7 +1,8 @@
-package framework.Services;
+package com.surepay.framework.services;
 
-import framework.config.ConfigManager;
-import framework.config.TestConfig;
+import com.surepay.framework.config.ConfigManager;
+import com.surepay.framework.config.TestConfig;
+
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -45,4 +46,5 @@ public abstract class BaseService {
                 .build();
     }
     protected abstract String getBasePath();
+    public abstract boolean isServiceHealthy();
 }

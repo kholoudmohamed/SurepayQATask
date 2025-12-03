@@ -1,9 +1,9 @@
-package framework.Services;
+package com.surepay.framework.services;
 
-import framework.Models.User;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import com.surepay.framework.models.User;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.*;
@@ -65,6 +65,23 @@ public class UserService extends BaseService {
         
         log.info("User list validation completed. Total: {}, Invalid: {}", 
             users.size(), invalidUsers);
+    }
+
+    @Override
+    public boolean isServiceHealthy() {
+                try {
+            getRequestSpec()
+                .when()
+                .get()
+                .then()
+                .statusCode(200);
+            
+            log.info("User service health check passed");
+            return true;
+        } catch (Exception e) {
+            log.error("User service health check failed", e);
+            return false;
+        }
     }
 
 }

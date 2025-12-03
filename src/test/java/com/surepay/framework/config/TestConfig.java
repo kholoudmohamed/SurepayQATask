@@ -1,4 +1,4 @@
-package framework.config;
+package com.surepay.framework.config;
 
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
@@ -9,8 +9,8 @@ import org.aeonbits.owner.Config.Sources;
 @Sources({
     "system:properties",
     "system:env",
-    "file:src/test/config/${test.environment}.properties",
-    "file:src/test/config/default.properties"
+    "file:src/resources/${test.environment}.properties",
+    "file:src/resources/default.properties"
 })
 public interface TestConfig extends Config {
     
