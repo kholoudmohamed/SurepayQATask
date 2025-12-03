@@ -29,6 +29,9 @@ public abstract class BaseService {
         
         log.info("Initialized API client for: {}", this.getClass().getSimpleName());
     }
+    protected RequestSpecification getRequestSpec() {
+        return RestAssured.given(requestSpec).basePath(getBasePath());
+    }
     private RequestSpecification buildRequestSpecification() {
         return new RequestSpecBuilder()
                 .setBaseUri(config.baseUrl())

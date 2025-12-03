@@ -90,4 +90,19 @@ public class User {
         @JsonProperty("bs")
         private String bs;
     }
+
+    public boolean isValidUser() {
+        return id != null && 
+               id > 0 && 
+               username != null && 
+               !username.trim().isEmpty() &&
+               email != null && 
+               isValidEmail(email);
+    }
+    private boolean isValidEmail(String email) {
+        return email != null && 
+               email.contains("@") && 
+               email.contains(".") &&
+               !email.trim().isEmpty();
+    }
 }
