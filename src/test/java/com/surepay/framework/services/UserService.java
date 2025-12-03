@@ -5,6 +5,10 @@ import io.restassured.response.Response;
 
 import com.surepay.framework.models.User;
 import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.*;
 
@@ -82,6 +86,40 @@ public class UserService extends BaseService {
             log.error("User service health check failed", e);
             return false;
         }
+    }
+    public Optional<User> findUserByUsername(String username) {
+        if (StringUtils.isBlank(username)) {
+            log.warn("Username cannot be null or empty");
+            return Optional.empty();
+        }
+        
+        log.info("Searching for user with username: {}", username);
+        
+        List<User> allUsers = getAllUsers();
+        
+        // Exact match first
+        Optional<User> exactMatch = allUsers.stream()
+            .filter(user -> username.equals(user.getUsername()))
+            .findFirst();
+        
+        if (exactMatch.isPresent()) {
+            log.info("Found exact username match: {}", exactMatch.get().getUsername());
+            return exactMatch;
+        }
+        
+        // Case-insensitive match
+        Optional<User> caseInsensitiveMatch = allUsers.stream()
+            .filter(user -> username.equalsIgnoreCase(user.getUsername()))
+            .findFirst();
+        
+        if (caseInsensitiveMatch.isPresent()) {
+            log.info("Found case-insensitive username match: {}", 
+                caseInsensitiveMatch.get().getUsername());
+            return caseInsensitiveMatch;
+        }
+        
+        log.warn("No user found with username: {}", username);
+        return Optional.empty();
     }
 
 }

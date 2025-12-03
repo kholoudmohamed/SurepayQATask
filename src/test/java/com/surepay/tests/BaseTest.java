@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public abstract class BaseTest {
     protected UserService userService;
+    protected PostService postService;
 
     @BeforeSuite(alwaysRun = true)
     public void setupSuite() {
@@ -21,6 +22,8 @@ public abstract class BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void setupTest(Method method) {
         userService = new UserService();
+        postService = new PostService();
+
         String testName = method.getName();
         log.info("Starting test: {}", testName);
         performHealthChecks();
@@ -28,8 +31,9 @@ public abstract class BaseTest {
     
     private void performHealthChecks() {
         boolean userServiceHealthy = userService.isServiceHealthy();
+        boolean postServiceHealthy = postService.isServiceHealthy();
         
-        if (!userServiceHealthy) {
+        if (!userServiceHealthy || !postServiceHealthy) {
             throw new RuntimeException("Service health check failed - cannot proceed with tests");
         }
     }

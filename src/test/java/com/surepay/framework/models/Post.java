@@ -24,4 +24,18 @@ public class Post {
     
     @JsonProperty("body")
     private String body;
+
+    public boolean belongsToUser(Integer targetUserId) {
+        return userId != null && userId.equals(targetUserId);
+    }
+        public boolean isValidPost() {
+        return id != null && 
+               id > 0 && 
+               userId != null && 
+               userId > 0 &&
+               title != null && 
+               !title.trim().isEmpty() &&
+               body != null && 
+               !body.trim().isEmpty();
+    }
 }
