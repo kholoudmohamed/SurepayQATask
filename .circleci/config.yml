@@ -27,16 +27,6 @@ jobs:
       - run:
           name: Run Tests
           command: mvn clean test -Dtest.environment=prod
-      - run:
-          name: Generate Test Report
-          command: mvn surefire-report:report-only
-          when: always
-      - store_test_results:
-          path: target/surefire-reports
-      - store_artifacts:
-          path: target/surefire-reports
-      - store_artifacts:
-          path: target/site
 
 workflows:
   test-workflow:
