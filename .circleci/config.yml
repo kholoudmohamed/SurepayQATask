@@ -15,6 +15,9 @@ jobs:
             - maven-deps-v1-{{ checksum "pom.xml" }}
             - maven-deps-v1-
       - run:
+          name: Ensure test results directory exists
+          command: mkdir -p /home/circleci/project/target/surefire-reports/
+      - run:
           name: Download Dependencies
           command: mvn dependency:resolve
       - save_cache:
