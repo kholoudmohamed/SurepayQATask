@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  maven: circleci/maven@1.4.1
+
+jobs:
+  test:
+    docker:
+      - image: cimg/openjdk:21.0
+    working_directory: ~/project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - maven-deps-v1-{{ checksum "pom.xml" }}
+            - maven-deps-v1-
+      - run:
+          name: Ensure test results directory exists
+          command: mkdir -p /home/circleci/project/target/surefire-reports/
+      - run:
+          name: Download Dependencies
+          command: mvn dependency:resolve
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-deps-v1-{{ checksum "pom.xml" }}
+      - run:
+          name: Run Tests
+          command: mvn clean test -Dtest.environment=prod
+
+workflows:
+  test-workflow:
+    jobs:
+      - test
