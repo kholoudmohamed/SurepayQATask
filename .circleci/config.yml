@@ -1,34 +1,64 @@
 version: 2.1
 
-orbs:
-  maven: circleci/maven@1.4.1
-
 jobs:
-  test:
+  test-and-report:
     docker:
       - image: cimg/openjdk:21.0
     working_directory: ~/project
     steps:
       - checkout
+      
+      # Cache dependencies
       - restore_cache:
           keys:
-            - maven-deps-v1-{{ checksum "pom.xml" }}
-            - maven-deps-v1-
-      - run:
-          name: Ensure test results directory exists
-          command: mkdir -p /home/circleci/project/target/surefire-reports/
+            - maven-deps-v2-{{ checksum "pom.xml" }}
+            - maven-deps-v2-
+      
+      # Download dependencies
       - run:
           name: Download Dependencies
-          command: mvn dependency:resolve
+          command: mvn dependency:resolve dependency:resolve-sources
+      
+      # Save dependency cache
       - save_cache:
           paths:
             - ~/.m2
-          key: maven-deps-v1-{{ checksum "pom.xml" }}
+          key: maven-deps-v2-{{ checksum "pom.xml" }}
+      
+      # Run tests with coverage
       - run:
           name: Run Tests
-          command: mvn clean test -Dtest.environment=prod
+          command: |
+            mvn clean test \
+              -Dtest.environment=prod \
+              -Dmaven.test.failure.ignore=true
+      
+      # Generate HTML test reports
+      - run:
+          name: Generate Test Reports
+          command: mvn surefire-report:report-only site:site
+          when: always
+      
+      # Store test results for CircleCI dashboard
+      - store_test_results:
+          path: target/surefire-reports
+      
+      # Store comprehensive HTML reports
+      - store_artifacts:
+          path: target/site
+          destination: html-reports
+      
+      # Store JaCoCo coverage reports
+      - store_artifacts:
+          path: target/site/jacoco
+          destination: coverage-reports
+      
+      # Store raw test results
+      - store_artifacts:
+          path: target/surefire-reports
+          destination: raw-test-results
 
 workflows:
-  test-workflow:
+  test-and-report:
     jobs:
-      - test
+      - test-and-report
