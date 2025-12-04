@@ -21,7 +21,10 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
         
         extentReports = new ExtentReports();
         extentReports.attachReporter(sparkReporter);
-        extentReports.setSystemInfo("Environment", "Production");
+        
+        // Get environment dynamically from system property, default to "test"
+        String environment = System.getProperty("test.environment", "test");
+        extentReports.setSystemInfo("Environment", environment.toUpperCase());
         extentReports.setSystemInfo("User", "QA Automation");
         extentReports.setSystemInfo("Java Version", System.getProperty("java.version"));
         extentReports.setSystemInfo("Test Framework", "TestNG + REST Assured");
