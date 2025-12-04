@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  test-and-report:
+  api-test-automation:
     docker:
       - image: cimg/openjdk:21.0
     working_directory: ~/project
@@ -64,6 +64,6 @@ jobs:
           destination: testng-reports
 
 workflows:
-  test-and-report:
+  api-test-automation:
     jobs:
-      - test-and-report
+      - api-test-automation
