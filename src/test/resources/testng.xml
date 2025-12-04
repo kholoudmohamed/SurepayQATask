@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="SurePayBlogAPITestSuite" verbose="2">
+    <test name="BlogWorkflowTests" preserve-order="true">
+        <classes>
+            <class name="com.surepay.tests.BlogWorkflowTests">
+                <methods>
+                    <include name="validateEmailFormatsInUserBlogComments"/>
+                    <include name="validateUserHasPostsWithComments"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <listeners>
+        <listener class-name="org.testng.reporters.JUnitXMLReporter"/>
+        <listener class-name="com.surepay.framework.reporting.ExtentReportListener"/>
+    </listeners>
+</suite>

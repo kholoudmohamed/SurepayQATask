@@ -5,83 +5,63 @@ jobs:
     docker:
       - image: cimg/openjdk:21.0
     working_directory: ~/project
+    
     steps:
       - checkout
       
-      # Cache dependencies
+      # Restore dependencies cache
       - restore_cache:
           keys:
-            - maven-deps-v2-{{ checksum "pom.xml" }}
-            - maven-deps-v2-
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
       
-      # Download dependencies
+      # Install dependencies
       - run:
-          name: Download Dependencies
-          command: mvn dependency:resolve dependency:resolve-sources
+          name: Install Dependencies
+          command: mvn dependency:go-offline
       
-      # Save dependency cache
+      # Save dependencies cache
       - save_cache:
           paths:
             - ~/.m2
-          key: maven-deps-v2-{{ checksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "pom.xml" }}
       
-      # Run tests without coverage (JaCoCo disabled)
+      # Run tests using TestNG suite
       - run:
-          name: Run Tests
+          name: Run TestNG Tests
           command: |
             mvn clean test \
               -Dtest.environment=prod \
               -Dmaven.test.failure.ignore=true
       
-      # Debug: Check what test result files were generated
+      # Collect test results for CircleCI Tests tab
       - run:
-          name: Debug - List generated test files
+          name: Collect Test Results for CircleCI
           command: |
-            echo "=== Surefire Reports Directory ==="
-            ls -la target/surefire-reports/ || echo "No surefire-reports directory"
-            echo "=== Looking for TEST-*.xml files ==="
-            find target -name "TEST-*.xml" -type f || echo "No TEST-*.xml files found"
-            echo "=== Looking for any XML files ==="
-            find target -name "*.xml" -type f || echo "No XML files found"
-          when: always
-      
-      # Generate HTML test reports (JaCoCo disabled)
-      - run:
-          name: Generate Test Reports
-          command: mvn surefire-report:report-only
-          when: always
-      
-      # Create a clean directory with only JUnit XML files for CircleCI
-      - run:
-          name: Prepare JUnit XML for CircleCI
-          command: |
-            mkdir -p /tmp/test-results/junit
-            # Copy JUnit XML files if they exist
+            mkdir -p /tmp/test-results/testng
             if ls target/surefire-reports/TEST-*.xml 1> /dev/null 2>&1; then
-              cp target/surefire-reports/TEST-*.xml /tmp/test-results/junit/
+              cp target/surefire-reports/TEST-*.xml /tmp/test-results/testng/
+              echo "Test XML files collected for CircleCI dashboard"
+              echo "Files collected:"
+              ls -la /tmp/test-results/testng/
+            else
+              echo "Warning: No TEST-*.xml files found"
             fi
-            # Also copy junitreports if they exist
-            if ls target/surefire-reports/junitreports/TEST-*.xml 1> /dev/null 2>&1; then
-              cp target/surefire-reports/junitreports/TEST-*.xml /tmp/test-results/junit/
-            fi
-            # List what we found
-            echo "Files in test results:"
-            ls -la /tmp/test-results/junit/ || echo "No files found"
           when: always
       
-      # Store only JUnit XML files for CircleCI dashboard
+      # Store test results for CircleCI Tests tab
       - store_test_results:
           path: /tmp/test-results
       
-      # Store comprehensive HTML reports
+      # Store Extent HTML reports as artifacts
       - store_artifacts:
-          path: target/site
-          destination: html-reports
+          path: target/extent-reports
+          destination: extent-reports
       
-      # Store raw test results
+      # Store TestNG reports as artifacts  
       - store_artifacts:
           path: target/surefire-reports
-          destination: raw-test-results
+          destination: testng-reports
 
 workflows:
   test-and-report:
