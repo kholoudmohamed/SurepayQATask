@@ -70,6 +70,32 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+        
+        <!-- Extent Reports for enhanced test reporting -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports-testng-adapter</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        
+        <!-- TestNG Reporting dependencies -->
+        <dependency>
+            <groupId>org.uncommons</groupId>
+            <artifactId>reportng</artifactId>
+            <version>1.1.4</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -106,8 +132,68 @@
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <!-- TestNG XML reports -->
+                    <useFile>true</useFile>
+                    <printSummary>true</printSummary>
+                    <reportFormat>xml</reportFormat>
+                    <!-- Force TestNG provider -->
+                    <testNGArtifactName>org.testng:testng</testNGArtifactName>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>3.0.0-M9</version>
+                    </dependency>
+                </dependencies>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M9</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
+                    <reportsDirectories>
+                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    </reportsDirectories>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report-only</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- JaCoCo disabled for now due to Java 21 compatibility issues
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
     </build>
 
