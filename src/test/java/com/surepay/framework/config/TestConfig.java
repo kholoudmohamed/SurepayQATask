@@ -6,25 +6,20 @@ import org.aeonbits.owner.Config.LoadType;
 import org.aeonbits.owner.Config.Sources;
 
 @LoadPolicy(LoadType.MERGE)
-@Sources({
-    "system:properties",
-    "system:env",
-    "classpath:config/${test.environment}.properties",
-    "classpath:config/default.properties"
-})
+@Sources({"system:properties", "system:env", "classpath:config/${test.environment}.properties",
+		"classpath:config/default.properties"})
 public interface TestConfig extends Config {
-    
-    @Key("base.url")
-    String baseUrl();
 
-    @Key("test.environment")
-    @DefaultValue("prod")
-    String testEnvironment();
-    
-    @Key("request.timeout")
-    int requestTimeout();
-    
-    @Key("connection.timeout")
-    int connectionTimeout();
+	@Key("base.url")
+	String baseUrl();
+
+	@Key("test.environment")
+	@DefaultValue("prod")
+	String testEnvironment();
+
+	@Key("request.timeout")
+	int requestTimeout();
+
+	@Key("connection.timeout")
+	int connectionTimeout();
 }
-

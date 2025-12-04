@@ -98,6 +98,21 @@ src/test/resources/config/
 
 ## 🔧 Advanced Usage
 
+### Code Formatting
+```bash
+# Check code formatting
+mvn spotless:check
+
+# Apply automatic formatting
+mvn spotless:apply
+
+# Formatting includes:
+# - Eclipse Java formatter for consistent styling
+# - Import ordering and organization  
+# - Unused import removal
+# - Proper indentation and spacing
+```
+
 ### Running Specific Tests
 ```bash
 # Single test class
