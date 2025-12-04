@@ -26,9 +26,6 @@ mvn clean test -Dtest.environment=prod
 mvn clean test -Dtest.environment=test
 ```
 
-## 📊 Test Reports
-
-### Local Execution
 After running tests, reports are generated automatically:
 
 ```
@@ -40,9 +37,9 @@ target/
     └── TEST-*.xml                 # JUnit XML format
 ```
 
-### CI/CD Pipeline (CircleCI)
-- **Tests Tab**: Individual test results and status
-- **Artifacts**: Professional dashboard with report links
+## 🧪 Test Scenarios
+
+Detailed test documentation can be found in the TestDocuments folder
 
 ## 🛠 Framework Architecture
 
@@ -67,10 +64,6 @@ src/test/
     ├── config/             # Environment configuration files (.properties)
     └── testng.xml          # Test suite configuration and report settings
 ```
-
-## 🧪 Test Scenarios
-
-Detailed test documentation can be found in the TestDocuments folder
 
 ## 🌍 Environment Support
 
