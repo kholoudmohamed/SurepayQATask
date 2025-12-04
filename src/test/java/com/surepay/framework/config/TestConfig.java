@@ -9,8 +9,8 @@ import org.aeonbits.owner.Config.Sources;
 @Sources({
     "system:properties",
     "system:env",
-    "classpath:${test.environment}.properties",
-    "classpath:default.properties"
+    "classpath:config/${test.environment}.properties",
+    "classpath:config/default.properties"
 })
 public interface TestConfig extends Config {
     
