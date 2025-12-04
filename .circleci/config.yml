@@ -25,14 +25,13 @@ jobs:
             - ~/.m2
           key: maven-deps-v2-{{ checksum "pom.xml" }}
       
-      # Run tests without coverage initially to fix compatibility issues
+      # Run tests without coverage (JaCoCo disabled)
       - run:
           name: Run Tests
           command: |
             mvn clean test \
               -Dtest.environment=prod \
-              -Dmaven.test.failure.ignore=true \
-              -Djacoco.skip=true
+              -Dmaven.test.failure.ignore=true
       
       # Debug: Check what test result files were generated
       - run:
@@ -46,10 +45,10 @@ jobs:
             find target -name "*.xml" -type f || echo "No XML files found"
           when: always
       
-      # Generate HTML test reports (skip JaCoCo for now)
+      # Generate HTML test reports (JaCoCo disabled)
       - run:
           name: Generate Test Reports
-          command: mvn surefire-report:report-only site:site
+          command: mvn surefire-report:report-only
           when: always
       
       # Create a clean directory with only JUnit XML files for CircleCI
