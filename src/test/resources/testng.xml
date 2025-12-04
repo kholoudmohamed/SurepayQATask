@@ -2,14 +2,52 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="SurePayBlogAPITestSuite" verbose="2">
-    <test name="BlogWorkflowTests" preserve-order="true">
+    
+    <!-- Regression Test Suite - All Critical Tests -->
+    <test name="RegressionTests" preserve-order="true">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.surepay.tests.BlogWorkflowTests"/>
+        </classes>
+    </test>
+    
+    <!-- Smoke Test Suite - Essential Happy Path Tests -->
+    <test name="SmokeTests" preserve-order="true" enabled="false">
         <classes>
             <class name="com.surepay.tests.BlogWorkflowTests">
                 <methods>
                     <include name="validateEmailFormatsInUserBlogComments"/>
-                    <include name="validateUserHasPostsWithComments"/>
+                    <include name="testDataConsistencyValidation"/>
                 </methods>
             </class>
+        </classes>
+    </test>
+    
+    <!-- Security Test Suite -->
+    <test name="SecurityTests" preserve-order="true" enabled="false">
+        <groups>
+            <run>
+                <include name="security"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.surepay.tests.BlogWorkflowTests"/>
+        </classes>
+    </test>
+    
+    <!-- Performance Test Suite -->
+    <test name="PerformanceTests" preserve-order="true" enabled="false">
+        <groups>
+            <run>
+                <include name="performance"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.surepay.tests.BlogWorkflowTests"/>
         </classes>
     </test>
     

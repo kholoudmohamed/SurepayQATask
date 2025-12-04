@@ -122,7 +122,7 @@ mvn test -Dtest=BlogWorkflowTests
 mvn test -Dtest=BlogWorkflowTests#testCompleteWorkflow
 
 # Test groups (if using TestNG groups)
-mvn test -Dgroups=smoke,regression
+mvn test -Dgroups=smoke,regression,edge-case
 ```
 
 ### Custom Configuration
