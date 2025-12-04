@@ -22,4 +22,17 @@ public interface TestConfig extends Config {
 
 	@Key("connection.timeout")
 	int connectionTimeout();
+
+	// Performance Thresholds
+	@Key("performance.threshold.users.api")
+	@DefaultValue("150")
+	int performanceThresholdUsersApi();
+
+	@Key("performance.threshold.posts.api")
+	@DefaultValue("100")
+	int performanceThresholdPostsApi();
+
+	@Key("performance.threshold.comments.api")
+	@DefaultValue("80")
+	int performanceThresholdCommentsApi();
 }
