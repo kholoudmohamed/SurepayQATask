@@ -39,7 +39,7 @@ target/
 
 ## 🧪 Test Scenarios
 
-Detailed test documentation can be found in the TestDocuments folder
+📋 **[Complete Test Documentation](TestDocuments/TestDocumentation.md)** - Comprehensive test report with coverage analysis, performance results, and defect tracking
 
 ## 🛠 Framework Architecture
 
